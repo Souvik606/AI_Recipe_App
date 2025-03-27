@@ -2,27 +2,28 @@ import {View, Text, Image, StyleSheet, TouchableOpacity} from "react-native";
 import {Marquee} from "@animatereactnative/marquee";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 import Colors from "@/services/Colors";
+import {router} from "expo-router";
 
 const Landing=()=>{
     const imageList=[
-        require('./../assets/images/1.jpg'),
-        require('./../assets/images/c1.jpg'),
-        require('./../assets/images/2.jpg'),
-        require('./../assets/images/c2.jpg'),
-        require('./../assets/images/3.jpg'),
-        require('./../assets/images/c3.jpg'),
-        require('./../assets/images/4.jpg'),
-        require('./../assets/images/6.jpg'),
-        require('./../assets/images/5.jpg'),
+        require('../../assets/images/1.jpg'),
+        require('../../assets/images/c1.jpg'),
+        require('../../assets/images/2.jpg'),
+        require('../../assets/images/c2.jpg'),
+        require('../../assets/images/3.jpg'),
+        require('../../assets/images/c3.jpg'),
+        require('../../assets/images/4.jpg'),
+        require('../../assets/images/6.jpg'),
+        require('../../assets/images/5.jpg'),
     ]
 
     return(
         <GestureHandlerRootView>
             <View>
                 <Marquee spacing={10} speed={0.7} withGesture={false}
-                    style={{
-                        transform:[{rotate:'-4deg'}]
-                    }}
+                         style={{
+                             transform:[{rotate:'-4deg'}]
+                         }}
                 >
                     <View style={styles.container}>
                         {imageList.map((image,item)=>(
@@ -78,7 +79,8 @@ const Landing=()=>{
                 }}>
                     Generate delicious recipes in seconds with the power of AI! 🍔
                 </Text>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity onPress={()=>router.replace("/(auth)/sign-up")}
+                                  style={styles.button}>
                     <Text style={{
                         textAlign:'center',
                         color:Colors.WHITE,

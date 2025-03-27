@@ -1,5 +1,11 @@
 import { Stack } from "expo-router";
 import {useFonts} from "expo-font";
+import { LogtoProvider, LogtoConfig } from '@logto/rn';
+
+const config: LogtoConfig = {
+  endpoint: 'https://zp6cuz.logto.app/',
+  appId: '993vw2zqp3b7kd5oo8x51',
+};
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -7,9 +13,14 @@ export default function RootLayout() {
     'outfit-bold': require('../assets/fonts/Outfit-Bold.ttf'),
   });
 
-  return <Stack>
-    <Stack.Screen name="landing" options={{headerShown: false}} />
-  </Stack>;
+  return (
+      <LogtoProvider config={config}>
+        <Stack>
+          <Stack.Screen name="index" options={{headerShown: false}} />
+            <Stack.Screen name="(auth)" options={{headerShown: false}} />
+        </Stack>
+      </LogtoProvider>
+  );
 }
 
 

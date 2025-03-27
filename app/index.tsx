@@ -1,16 +1,7 @@
-import { Text, View } from "react-native";
 import {Redirect} from "expo-router";
 
-export default function Index() {
+export default function Page() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Redirect href='/landing'/>
-    </View>
+      <Redirect href='/(auth)/landing'/>
   );
 }
