@@ -33,7 +33,14 @@ const SignUp = () => {
             await signUp.create({
                 emailAddress: form.email,
                 password: form.password,
+                firstName: form.name.split(" ")[0],
+                lastName: form.name.split(" ").splice(1).join(" ")||" ",
             });
+
+            await signUp?.update({
+                firstName: form.name.split(" ")[0]
+            })
+
             await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
             setVerification({
                 ...verification,
