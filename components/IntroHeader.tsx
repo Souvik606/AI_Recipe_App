@@ -1,7 +1,7 @@
 import { useUser, useAuth } from "@clerk/clerk-expo";
-import { Switch, Text, View, TouchableOpacity, Pressable } from "react-native";
+import { Switch, Text, View, TouchableOpacity, Pressable, StyleSheet } from "react-native";
 import { useState, useMemo } from "react";
-import Colors from "@/services/Colors";
+import { router } from "expo-router";
 
 const COLORS = ["#1B5E20", "#0D47A1", "#B71C1C", "#E65100", "#880E4F"]; // Dark Green, Dark Blue, Red, Orange, Dark Pink
 
@@ -14,107 +14,37 @@ const IntroHeader = () => {
     const firstLetter = user?.firstName ? user.firstName[0].toUpperCase() : "?";
     const randomColor = useMemo(() => COLORS[Math.floor(Math.random() * COLORS.length)], []);
 
+    const handleSignOut = () => {
+        signOut();
+        router.replace("/(auth)/sign-in");
+    };
+
     return (
-        <View style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: 10
-        }}>
-            <View style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 10
-            }}>
+        <View style={styles.container}>
+            {/* Profile Icon & Greeting */}
+            <View style={styles.profileContainer}>
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
-                    <View
-                        style={{
-                            width: 40,
-                            height: 40,
-                            borderRadius: 20,
-                            backgroundColor: randomColor,
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}
-                    >
-                        <Text style={{
-                            color: "#FFFFFF",
-                            fontSize: 18,
-                            fontFamily: "outfit",
-                        }}>
-                            {firstLetter}
-                        </Text>
+                    <View style={[styles.profileIcon, { backgroundColor: randomColor }]}>
+                        <Text style={styles.profileLetter}>{firstLetter}</Text>
                     </View>
                 </TouchableOpacity>
-
-                <Text style={{
-                    fontFamily: 'outfit-bold',
-                    fontSize: 20
-                }}>
-                    Hello {user?.firstName}
-                </Text>
+                <Text style={styles.greeting}>Hello {user?.firstName}</Text>
             </View>
 
-            <View style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 8
-            }}>
-                <Text style={{
-                    fontFamily: 'outfit',
-                    fontSize: 16
-                }}>
-                    {isEnabled ? 'Veg' : 'Non-Veg'}
-                </Text>
-                <Switch
-                    value={isEnabled}
-                    onValueChange={() => setIsEnabled(!isEnabled)}
-                />
+            {/* Veg/Non-Veg Toggle */}
+            <View style={styles.toggleContainer}>
+                <Text style={styles.toggleText}>{isEnabled ? "Veg" : "Non-Veg"}</Text>
+                <Switch value={isEnabled} onValueChange={() => setIsEnabled(!isEnabled)} />
             </View>
 
+            {/* Sign-Out Modal */}
             {modalVisible && (
-                <Pressable
-                    style={{
-                        position: "absolute",
-                        top: 15,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        zIndex: 10, // Ensures it's above all components
-                    }}
-                    onPress={() => setModalVisible(false)} // Closes when clicking outside
-                >
-                    <View
-                        style={{
-                            position: "absolute",
-                            top: 50,
-                            left: 10,
-                            width: 150,
-                            backgroundColor: Colors.GRAY,
-                            borderRadius: 8,
-                            padding: 10,
-                            alignItems: "center",
-                            zIndex: 20
-                        }}
-                    >
-                        <TouchableOpacity
-                            onPress={() => {
-                                signOut();
-                                setModalVisible(false);
-                            }}
-                            style={{
-                                padding: 10,
-                                width: "100%",
-                                alignItems: "center",
-                                borderRadius: 6
-                            }}
-                        >
-                            <Text style={{ fontSize: 16, fontFamily: "outfit-bold", color: "#D32F2F" }}>
-                                Sign Out
-                            </Text>
+                <Pressable style={styles.overlay} onPress={() => setModalVisible(false)}>
+                    <View style={styles.modal}>
+                        <Text style={styles.modalName}>{user?.fullName}</Text>
+                        <Text style={styles.modalEmail}>{user?.emailAddresses[0].emailAddress}</Text>
+                        <TouchableOpacity onPress={handleSignOut} style={styles.signOutButton}>
+                            <Text style={styles.signOutText}>Sign Out</Text>
                         </TouchableOpacity>
                     </View>
                 </Pressable>
@@ -122,5 +52,79 @@ const IntroHeader = () => {
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: 10,
+    },
+    profileContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 10,
+    },
+    profileIcon: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    profileLetter: {
+        color: "#FFFFFF",
+        fontSize: 18,
+        fontFamily: "outfit",
+    },
+    greeting: {
+        fontFamily: "outfit-bold",
+        fontSize: 20,
+    },
+    toggleContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8,
+    },
+    toggleText: {
+        fontFamily: "outfit",
+        fontSize: 16,
+    },
+    overlay: {
+        position: "absolute",
+        top: 13,
+        left: 10,
+        right: 0,
+        bottom: 0,
+        zIndex: 10,
+    },
+    modal: {
+        position: "absolute",
+        top: 50,
+        left: 10,
+        width: 350,
+        backgroundColor: "#FAFAFA",
+        borderRadius: 8,
+        padding: 20,
+        zIndex: 20,
+    },
+    modalName: {
+        fontFamily: "outfit-bold",
+        fontSize: 18,
+    },
+    modalEmail: {
+        fontFamily: "outfit",
+        fontSize: 16,
+        marginVertical: 5,
+    },
+    signOutButton: {
+        marginTop: 15,
+    },
+    signOutText: {
+        fontSize: 16,
+        fontFamily: "outfit-bold",
+        color: "#D32F2F",
+    },
+});
 
 export default IntroHeader;

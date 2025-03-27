@@ -23,7 +23,7 @@ const CreateRecipe=()=>{
 
 const styles=StyleSheet.create({
     container:{
-        marginTop:10,
+        marginTop:5,
         padding:15,
         backgroundColor:Colors.SECONDARY,
         borderRadius:25,

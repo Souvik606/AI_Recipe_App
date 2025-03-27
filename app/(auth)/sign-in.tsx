@@ -1,17 +1,42 @@
-import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import Colors from "@/services/Colors";
 import HeaderImage from "@/assets/images/food-signin.jpg"
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import InputField from "@/components/InputField";
-import {Link} from "expo-router";
+import {Link, router} from "expo-router";
 import email from '@/assets/icons/email.png'
 import lock from '@/assets/icons/lock.png'
+import {useSignIn} from "@clerk/clerk-expo";
 
 const SignIn=()=>{
+    const { signIn, setActive, isLoaded } = useSignIn();
+
     const [form, setForm] = useState({
         email: "",
         password: "",
     });
+
+    const onSignInPress = useCallback(async () => {
+        if (!isLoaded) return;
+
+        try {
+            const signInAttempt = await signIn.create({
+                identifier: form.email,
+                password: form.password,
+            });
+
+            if (signInAttempt.status === "complete") {
+                await setActive({ session: signInAttempt.createdSessionId });
+                router.replace("/(root)/(tabs)/home");
+            } else {
+                console.log(JSON.stringify(signInAttempt, null, 2));
+                Alert.alert("Error", "Log in failed. Please try again.");
+            }
+        } catch (err: any) {
+            console.log(JSON.stringify(err, null, 2));
+            Alert.alert("Error", err.errors[0].longMessage);
+        }
+    }, [isLoaded, form]);
 
     return(
         <ScrollView style={{
@@ -49,7 +74,7 @@ const SignIn=()=>{
                         onChangeText={(value) => setForm({ ...form, password: value })}
                     />
 
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={onSignInPress}>
                         <Text style={{
                             textAlign:'center',
                             color:Colors.WHITE,
