@@ -85,7 +85,7 @@ const Landing=()=>{
                         textAlign:'center',
                         color:Colors.WHITE,
                         fontSize:22,
-                        fontFamily:'outfit',
+                        fontFamily:'outfit-bold',
                         marginTop:7
                     }}>
                         Get Started 🍽️
@@ -111,7 +111,7 @@ const styles=StyleSheet.create({
         backgroundColor:Colors.PRIMARY,
         paddingVertical:10,
         paddingHorizontal:15,
-        borderRadius:15,
+        borderRadius:999,
         marginTop:20
     }
 })

@@ -1,11 +1,9 @@
 import { Stack } from "expo-router";
 import {useFonts} from "expo-font";
-import { LogtoProvider, LogtoConfig } from '@logto/rn';
+import { ClerkProvider } from '@clerk/clerk-expo'
+import {tokenCache} from "@/lib/auth";
 
-const config: LogtoConfig = {
-  endpoint: 'https://zp6cuz.logto.app/',
-  appId: '993vw2zqp3b7kd5oo8x51',
-};
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -13,13 +11,20 @@ export default function RootLayout() {
     'outfit-bold': require('../assets/fonts/Outfit-Bold.ttf'),
   });
 
+  if (!publishableKey) {
+      throw new Error(
+          'Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env',
+      )
+  }
+
   return (
-      <LogtoProvider config={config}>
+      <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
         <Stack>
           <Stack.Screen name="index" options={{headerShown: false}} />
             <Stack.Screen name="(auth)" options={{headerShown: false}} />
+            <Stack.Screen name="(root)" options={{headerShown: false}} />
         </Stack>
-      </LogtoProvider>
+      </ClerkProvider>
   );
 }
 
