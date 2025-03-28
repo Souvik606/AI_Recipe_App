@@ -1,9 +1,27 @@
-import {View, Text, Image, StyleSheet, TextInput, TouchableOpacity} from "react-native";
+import {View, Text, Image, StyleSheet, TextInput, TouchableOpacity, Alert, ActivityIndicator} from "react-native";
 import Colors from "@/services/Colors";
 import {useState} from "react";
+import AIModel from "@/lib/openai";
+import GENERATE_RECIPE_OPTION_PROMPT from '@/services/Prompt'
 
 const CreateRecipe=()=>{
     const [userInput, setUserInput] = useState("")
+    const [recipeOptions,setRecipeOptions] = useState();
+    const [loading, setLoading] = useState(false);
+
+    const onGenerate=async()=>{
+        console.log("Inside")
+        if(!userInput){
+            Alert.alert("Please enter details");
+            return;
+        }
+        setLoading(true);
+        const result=await AIModel(
+            userInput+GENERATE_RECIPE_OPTION_PROMPT
+        )
+        console.log(result?.choices[0].message)
+        setLoading(false);
+    }
 
     return(
         <View style={styles.container}>
@@ -14,8 +32,17 @@ const CreateRecipe=()=>{
                        placeholder="What you want to create?Add ingredients etc"
                        onChangeText={(value)=>setUserInput(value)}
             />
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>✨  Generate Recipe</Text>
+            <TouchableOpacity style={styles.button} onPress={()=>onGenerate()}>
+                <View style={{
+                    display:"flex",
+                    justifyContent:'center',
+                    alignItems:'center',
+                    flexDirection:'row',
+                    gap:8
+                }}>
+                    <Text style={styles.buttonText}>✨  Generate Recipe</Text>
+                    {loading?<ActivityIndicator color={Colors.WHITE}/>:""}
+                </View>
             </TouchableOpacity>
         </View>
     )
