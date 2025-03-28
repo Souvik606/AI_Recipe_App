@@ -1,4 +1,4 @@
-import {View, Text, ScrollView} from "react-native";
+import {ScrollView} from "react-native";
 import Colors from "@/services/Colors";
 import IntroHeader from "@/components/IntroHeader";
 import Recipe from "@/components/Recipe";
