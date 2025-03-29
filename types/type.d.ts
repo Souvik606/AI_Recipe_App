@@ -10,3 +10,9 @@ declare interface InputFieldProps extends TextInputProps {
     iconStyle?: StyleProp<ImageStyle>;
     className?: string;
 }
+
+declare interface Categories{
+    category_id: any;
+    category_name: string;
+    image_url: string;
+}

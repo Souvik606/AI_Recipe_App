@@ -6,5 +6,7 @@ export default{
         -Emoji icons for each ingredient as icon,quantity as quantity,along with detail step by step recipe as steps
         -Total Calories as calories(only number),Minutes to cook as cookTime and serving number as serveTo
         -Realistic image Text prompt as per recipe as ImagePrompt
-        -Give me response in JSON format only`
+        -Give me response in JSON format only
+        -Return json in an array and no other text or quotations
+        `
 }

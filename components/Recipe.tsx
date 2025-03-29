@@ -4,12 +4,15 @@ import {useRef, useState} from "react";
 import AIModel from "@/lib/openai";
 import Prompt from '@/services/Prompt'
 import ActionSheet,{ActionSheetRef} from "react-native-actions-sheet";
+import LoadingDialog from "@/components/LoadingDialog";
+import generateImage from "@/lib/imageAi";
 
 const CreateRecipe=()=>{
     const [userInput, setUserInput] = useState("")
     const [recipeOptions,setRecipeOptions] = useState<any>([]);
     const [loading, setLoading] = useState(false);
     const actionSheetRef=useRef<ActionSheetRef>(null);
+    const [openLoading,setOpenLoading] = useState(false);
 
     const onGenerate=async()=>{
         if(!userInput){
@@ -19,7 +22,7 @@ const CreateRecipe=()=>{
         try {
             setLoading(true)
             const result = await AIModel(userInput + Prompt.GENERATE_RECIPE_OPTION_PROMPT);
-            const content=JSON.parse(result?.choices[0].message.content.replace(/^```(json)?\s*/, "").replace(/\s*```$/, ""));
+            const content=JSON.parse(result?.choices[0].message?.content.replace(/^```(json)?\s*/, "").replace(/\s*```$/, ""));
             content && setRecipeOptions(content)
             setLoading(false);
             actionSheetRef.current?.show();
@@ -28,8 +31,25 @@ const CreateRecipe=()=>{
             Alert.alert("Error", "Something went wrong while generating the recipe.");
         } finally {
             setLoading(false);
-            console.log(recipeOptions)
             actionSheetRef.current?.show()
+        }
+    }
+
+    const GenerateCompleteRecipe=async(option:any)=>{
+        actionSheetRef.current?.hide();
+        try{
+            setOpenLoading(true);
+            const PROMPT="RecipeName "+option.recipeName+" Description:"+option.recipeDescription+Prompt.GENERATE_COMPLETE_RECIPE;
+            const result=await AIModel(PROMPT);
+            const content:any=JSON.parse(result?.choices[0].message?.content?.replace(/^```(json)?\s*/, "").replace(/\s*```$/, ""));
+            const imagePrompt=content[0]?.ImagePrompt;
+            const output_url=await generateImage(imagePrompt)
+        }catch(error){
+            console.error("Error during AI model call:", error);
+            Alert.alert("Error", "Something went wrong while generating the recipe.");
+        }
+        finally {
+            setOpenLoading(false);
         }
     }
 
@@ -55,12 +75,13 @@ const CreateRecipe=()=>{
                 </View>
             </TouchableOpacity>
 
+            <LoadingDialog visible={openLoading}/>
             <ActionSheet ref={actionSheetRef}>
                 <View style={styles.actionSheetContainer}>
                     <Text style={styles.actionSheetHeading}>Select Recipe</Text>
                     <View>
                         {recipeOptions?.map((recipe:any, index:any) => (
-                            <View key={index} style={styles.recipeContainer}>
+                            <TouchableOpacity onPress={()=>GenerateCompleteRecipe(recipe)} key={index} style={styles.recipeContainer}>
                                 <Text style={{
                                     fontFamily:'outfit-bold',
                                     fontSize:16
@@ -72,7 +93,7 @@ const CreateRecipe=()=>{
                                     fontFamily:'outfit',
                                     color:Colors.GRAY
                                 }}>{recipe.description}</Text>
-                            </View>
+                            </TouchableOpacity>
                         ))}
                     </View>
                 </View>
