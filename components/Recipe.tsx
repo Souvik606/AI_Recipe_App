@@ -6,6 +6,8 @@ import Prompt from '@/services/Prompt'
 import ActionSheet,{ActionSheetRef} from "react-native-actions-sheet";
 import LoadingDialog from "@/components/LoadingDialog";
 import generateImage from "@/lib/imageAi";
+import {fetchAPI} from "@/lib/fetch";
+import {useUser} from "@clerk/clerk-expo";
 
 const CreateRecipe=()=>{
     const [userInput, setUserInput] = useState("")
@@ -13,6 +15,7 @@ const CreateRecipe=()=>{
     const [loading, setLoading] = useState(false);
     const actionSheetRef=useRef<ActionSheetRef>(null);
     const [openLoading,setOpenLoading] = useState(false);
+    const { user } = useUser();
 
     const onGenerate=async()=>{
         if(!userInput){
@@ -42,8 +45,17 @@ const CreateRecipe=()=>{
             const PROMPT="RecipeName "+option.recipeName+" Description:"+option.recipeDescription+Prompt.GENERATE_COMPLETE_RECIPE;
             const result=await AIModel(PROMPT);
             const content:any=JSON.parse(result?.choices[0].message?.content?.replace(/^```(json)?\s*/, "").replace(/\s*```$/, ""));
+            console.log(content[0])
             const imagePrompt=content[0]?.ImagePrompt;
-            const output_url=await generateImage(imagePrompt)
+            const outputUrl=await generateImage(imagePrompt)
+            await fetchAPI('/(api)/recipe',{
+                method: "POST",
+                body:JSON.stringify({
+                    ...content[0],
+                    imageUrl:outputUrl,
+                    email:user?.emailAddresses[0].emailAddress
+                }),
+            })
         }catch(error){
             console.error("Error during AI model call:", error);
             Alert.alert("Error", "Something went wrong while generating the recipe.");

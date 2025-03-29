@@ -7,6 +7,15 @@ export default{
         -Total Calories as calories(only number),Minutes to cook as cookTime and serving number as serveTo
         -Realistic image Text prompt as per recipe as ImagePrompt
         -Give me response in JSON format only
+        -Following field names should be given only in this named format.
+            recipeName,
+            description,
+            ingredients,
+            steps,
+            calories,
+            cookTime,
+            serveTo,
+            ImagePrompt,
         -Return json in an array and no other text or quotations
         `
 }

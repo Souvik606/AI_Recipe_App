@@ -4,7 +4,6 @@ const BASE_URL='https://aigurulab.tech';
 
 const generateImage =async(prompt:string)=>{
     try{
-        console.log(prompt);
         const result=await axios.post(BASE_URL+'/api/generate-image',
             {
                 width: 1024,
