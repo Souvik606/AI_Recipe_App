@@ -1,26 +1,36 @@
 import {View, Text, Image, StyleSheet, TextInput, TouchableOpacity, Alert, ActivityIndicator} from "react-native";
 import Colors from "@/services/Colors";
-import {useState} from "react";
+import {useRef, useState} from "react";
 import AIModel from "@/lib/openai";
-import GENERATE_RECIPE_OPTION_PROMPT from '@/services/Prompt'
+import Prompt from '@/services/Prompt'
+import ActionSheet,{ActionSheetRef} from "react-native-actions-sheet";
 
 const CreateRecipe=()=>{
     const [userInput, setUserInput] = useState("")
-    const [recipeOptions,setRecipeOptions] = useState();
+    const [recipeOptions,setRecipeOptions] = useState<any>([]);
     const [loading, setLoading] = useState(false);
+    const actionSheetRef=useRef<ActionSheetRef>(null);
 
     const onGenerate=async()=>{
-        console.log("Inside")
         if(!userInput){
             Alert.alert("Please enter details");
             return;
         }
-        setLoading(true);
-        const result=await AIModel(
-            userInput+GENERATE_RECIPE_OPTION_PROMPT
-        )
-        console.log(result?.choices[0].message)
-        setLoading(false);
+        try {
+            setLoading(true)
+            const result = await AIModel(userInput + Prompt.GENERATE_RECIPE_OPTION_PROMPT);
+            const content=JSON.parse(result?.choices[0].message.content.replace(/^```(json)?\s*/, "").replace(/\s*```$/, ""));
+            content && setRecipeOptions(content)
+            setLoading(false);
+            actionSheetRef.current?.show();
+        } catch (error) {
+            console.error("Error during AI model call:", error);
+            Alert.alert("Error", "Something went wrong while generating the recipe.");
+        } finally {
+            setLoading(false);
+            console.log(recipeOptions)
+            actionSheetRef.current?.show()
+        }
     }
 
     return(
@@ -44,6 +54,29 @@ const CreateRecipe=()=>{
                     {loading?<ActivityIndicator color={Colors.WHITE}/>:""}
                 </View>
             </TouchableOpacity>
+
+            <ActionSheet ref={actionSheetRef}>
+                <View style={styles.actionSheetContainer}>
+                    <Text style={styles.actionSheetHeading}>Select Recipe</Text>
+                    <View>
+                        {recipeOptions?.map((recipe:any, index:any) => (
+                            <View key={index} style={styles.recipeContainer}>
+                                <Text style={{
+                                    fontFamily:'outfit-bold',
+                                    fontSize:16
+                                }}>
+                                    {recipe.recipeName}
+                                </Text>
+
+                                <Text style={{
+                                    fontFamily:'outfit',
+                                    color:Colors.GRAY
+                                }}>{recipe.description}</Text>
+                            </View>
+                        ))}
+                    </View>
+                </View>
+            </ActionSheet>
         </View>
     )
 }
@@ -96,6 +129,20 @@ const styles=StyleSheet.create({
         fontSize: 20,
         fontFamily: "outfit",
         marginTop: 5,
+    },
+    actionSheetContainer:{
+        padding:25
+    },
+    actionSheetHeading:{
+        fontFamily:'outfit-bold',
+        fontSize:23,
+        textAlign:'center'
+    },
+    recipeContainer:{
+        padding:15,
+        borderWidth:0.2,
+        borderRadius:15,
+        marginTop:15,
     }
 })
 

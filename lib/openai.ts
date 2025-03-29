@@ -6,8 +6,8 @@ const openai = new OpenAI({
 })
 
 const AIModel=async(prompt:string)=>{
-    return await openai.chat.completions.create({
-        model: "google/gemini-2.5-pro-exp-03-25:free",
+    return openai.chat.completions.create({
+        model: "deepseek/deepseek-chat-v3-0324:free",
         messages: [
             { role: "user", content: prompt }
         ],
