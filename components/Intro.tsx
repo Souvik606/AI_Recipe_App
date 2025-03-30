@@ -61,8 +61,8 @@ const Intro=({recipe}:IntroProps)=>{
                 <TouchableOpacity onPress={()=>{
                     !saved?saveRecipe():deleteRecipe()
                 }}>
-                    {!saved?<Feather name="bookmark" size={24} color="black" />:
-                        <FontAwesome name="bookmark" size={24} color="black" />
+                    {!saved?<Feather name="bookmark" size={30} color="black" />:
+                        <FontAwesome name="bookmark" size={30} color="black" />
                     }
                 </TouchableOpacity>
             </View>

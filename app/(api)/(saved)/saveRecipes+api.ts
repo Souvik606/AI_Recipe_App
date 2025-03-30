@@ -8,7 +8,7 @@ export async function POST(request:Request){
         SELECT id FROM users_list WHERE email=${email};
        `
        const response=await sql`
-        INSERT INTO saved_recipes(user_id,category_id)
+        INSERT INTO saved_recipes(user_id,recipe_id)
         VALUES(${userId[0].id},${recipeId})
         RETURNING *
         `

@@ -5,7 +5,7 @@ export async function DELETE(request:Request){
         const {recipeId}=await request.json()
 
         const response=await sql`
-        DELETE FROM saved_recipes(user_id,category_id)
+        DELETE FROM saved_recipes
         WHERE recipe_id=${recipeId}
         RETURNING *;
         `
