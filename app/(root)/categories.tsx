@@ -8,7 +8,7 @@ import RecipeCard from "@/components/RecipeCard";
 const RecipeByCategory=()=>{
     const {categoryName}=useLocalSearchParams();
 
-    const {data:recipeList,loading,error}=useFetch<Recipe[]>(`/(api)/recipeByCategory?category=${categoryName}`)
+    const {data:recipeList,loading}=useFetch<Recipe[]>(`/(api)/recipeByCategory?category=${categoryName}`)
 
     return(
         <View style={{

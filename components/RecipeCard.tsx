@@ -1,15 +1,25 @@
 import {Recipe} from "@/types/type";
-import {View, Image, Text} from "react-native";
+import {View, Image, Text, TouchableOpacity} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 import Colors from "@/services/Colors";
+import {useRouter} from "expo-router";
 
 type RecipeCardProps = {
     recipe: Recipe;
 };
 
 const RecipeCard=({ recipe }: RecipeCardProps)=>{
+    const router = useRouter();
+
     return(
-        <View style={{
+        <TouchableOpacity onPress={()=>{
+            router.push({
+                pathname:'/(root)/recipeDetails',
+                params:{
+                    recipeData:JSON.stringify(recipe)
+                }
+            })
+        }} style={{
             margin:5,
         }}>
             <Image source={{uri:recipe?.image_url}} style={{
@@ -34,7 +44,7 @@ const RecipeCard=({ recipe }: RecipeCardProps)=>{
                     }}>{recipe?.recipe_name}</Text>
                 </View>
             </LinearGradient>
-        </View>
+        </TouchableOpacity>
     )
 }
 

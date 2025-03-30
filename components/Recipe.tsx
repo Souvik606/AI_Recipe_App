@@ -8,6 +8,7 @@ import LoadingDialog from "@/components/LoadingDialog";
 import generateImage from "@/lib/imageAi";
 import {fetchAPI} from "@/lib/fetch";
 import {useUser} from "@clerk/clerk-expo";
+import {useRouter} from "expo-router";
 
 const CreateRecipe=()=>{
     const [userInput, setUserInput] = useState("")
@@ -16,6 +17,7 @@ const CreateRecipe=()=>{
     const actionSheetRef=useRef<ActionSheetRef>(null);
     const [openLoading,setOpenLoading] = useState(false);
     const { user } = useUser();
+    const router = useRouter();
 
     const onGenerate=async()=>{
         if(!userInput){
@@ -44,11 +46,10 @@ const CreateRecipe=()=>{
             setOpenLoading(true);
             const PROMPT="RecipeName "+option.recipeName+" Description:"+option.recipeDescription+Prompt.GENERATE_COMPLETE_RECIPE;
             const result=await AIModel(PROMPT);
-            const content:any=JSON.parse(result?.choices[0].message?.content.replace(/^```(json)?\s*/, "").replace(/\s*```$/, ""));
-            console.log(content[0])
+            const content=JSON.parse(result?.choices[0].message?.content.replace(/^```(json)?\s*/, "").replace(/\s*```$/, ""));
             const imagePrompt=content[0]?.ImagePrompt;
             const outputUrl=await generateImage(imagePrompt)
-            await fetchAPI('/(api)/recipe',{
+            const {data:recipe}=await fetchAPI('/(api)/recipe',{
                 method: "POST",
                 body:JSON.stringify({
                     ...content[0],
@@ -56,6 +57,15 @@ const CreateRecipe=()=>{
                     email:user?.emailAddresses[0].emailAddress
                 }),
             })
+            console.log("recipe",recipe[0])
+            router.push({
+                    pathname:'/(root)/recipeDetails',
+                    params:{
+                        recipeData:JSON.stringify(recipe[0])
+                    }
+                }
+            )
+
         }catch(error){
             console.error("Error during AI model call:", error);
             Alert.alert("Error", "Something went wrong while generating the recipe.");

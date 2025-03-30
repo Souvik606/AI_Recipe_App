@@ -35,7 +35,7 @@ const SignUp = () => {
                 emailAddress: form.email,
                 password: form.password,
                 firstName: form.name.split(" ")[0],
-                lastName: form.name.split(" ").splice(1).join(" ")||" ",
+                lastName: form.name.split(" ").splice(1).join(" ")||"",
             });
 
             await signUp?.update({

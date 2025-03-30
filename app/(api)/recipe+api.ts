@@ -41,7 +41,7 @@ export async function POST(request: Request) {
                 { status: 404 }
             );
         }
-        console.log(categoryId)
+
         const recipe = await sql`
         INSERT INTO recipe(
             recipe_name,
