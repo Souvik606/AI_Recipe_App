@@ -6,6 +6,7 @@ export default{
         -Emoji icons for each ingredient as icon,quantity as quantity,along with detail step by step recipe as steps
         -Total Calories as calories(only number),Minutes to cook as cookTime and serving number as serveTo
         -Realistic image Text prompt as per recipe as ImagePrompt
+        -Select one category of the food from one of the following-[Breakfast,Lunch,Dinner,Drink,Salad,Dessert,FastFood,Chinese]
         -Give me response in JSON format only
         -Following field names should be given only in this named format.
             recipeName,
@@ -15,6 +16,7 @@ export default{
             calories,
             cookTime,
             serveTo,
+            category,
             ImagePrompt,
         -Return json in an array and no other text or quotations
         `

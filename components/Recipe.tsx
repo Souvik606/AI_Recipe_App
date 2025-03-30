@@ -44,7 +44,7 @@ const CreateRecipe=()=>{
             setOpenLoading(true);
             const PROMPT="RecipeName "+option.recipeName+" Description:"+option.recipeDescription+Prompt.GENERATE_COMPLETE_RECIPE;
             const result=await AIModel(PROMPT);
-            const content:any=JSON.parse(result?.choices[0].message?.content?.replace(/^```(json)?\s*/, "").replace(/\s*```$/, ""));
+            const content:any=JSON.parse(result?.choices[0].message?.content.replace(/^```(json)?\s*/, "").replace(/\s*```$/, ""));
             console.log(content[0])
             const imagePrompt=content[0]?.ImagePrompt;
             const outputUrl=await generateImage(imagePrompt)

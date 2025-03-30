@@ -11,6 +11,7 @@ export async function POST(request: Request) {
             cookTime,
             serveTo,
             ImagePrompt,
+            category,
             imageUrl,
             email
         } = await request.json();
@@ -31,6 +32,16 @@ export async function POST(request: Request) {
             );
         }
 
+        const categoryId=await sql`SELECT category_id FROM categories WHERE category_name=${category}`;
+
+        if(!categoryId.length){
+            console.log("Category error")
+            return new Response(
+                JSON.stringify({ error: "Category not found" }),
+                { status: 404 }
+            );
+        }
+        console.log(categoryId)
         const recipe = await sql`
         INSERT INTO recipe(
             recipe_name,
@@ -41,6 +52,7 @@ export async function POST(request: Request) {
             cook_time,
             serve_to,
             image_prompt,
+            category_id,
             image_url,
             user_id
         ) VALUES (
@@ -52,6 +64,7 @@ export async function POST(request: Request) {
             ${cookTime},
             ${serveTo},
             ${ImagePrompt},
+            ${categoryId[0].category_id},
             ${imageUrl},
             ${user[0].id}
         )
