@@ -4,18 +4,12 @@ export async function GET(request: Request) {
     try {
         const url = new URL(request.url);
         const searchParams = url.searchParams;
-        const email = searchParams.get("email");
-
-        const userId=await sql`
-        SELECT id FROM users_list WHERE email=${email};
-       `
+        const recipeId = searchParams.get("recipeId");
 
         const response = await sql`
-            SELECT * FROM recipe
-            WHERE recipe_id IN (
-                SELECT recipe_id FROM saved_recipes
-                WHERE user_id=${userId[0].id}                
-                );
+            SELECT EXISTS (
+                SELECT 1 FROM saved_recipes WHERE recipe_id = ${recipeId}
+            ) AS is_saved;
         `;
 
         return new Response(JSON.stringify({ data: response }), {

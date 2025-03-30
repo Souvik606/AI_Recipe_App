@@ -10,11 +10,12 @@ import {useState} from "react";
 
 type IntroProps = {
     recipe: Recipe;
+    saveStatus:boolean|null;
 };
 
-const Intro=({recipe}:IntroProps)=>{
+const Intro=({recipe,saveStatus}:IntroProps)=>{
     const {user}=useUser();
-    const [saved, setSaved] = useState(false);
+    const [saved, setSaved] = useState(saveStatus);
 
     const saveRecipe=async()=>{
         await fetchAPI('/(api)/(saved)/saveRecipes',{
