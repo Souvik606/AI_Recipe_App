@@ -1,9 +1,11 @@
-import { Text, View, Image, StyleSheet, FlatList } from "react-native";
+import {Text, View, Image, StyleSheet, FlatList, TouchableOpacity} from "react-native";
 import { useFetch } from "@/lib/fetch";
 import { Categories } from "@/types/type";
+import {useRouter} from "expo-router";
 
 const Category = () => {
     const { data: categories, loading, error } = useFetch<Categories[]>('/(api)/categories');
+    const router = useRouter();
 
     return (
         <View style={styles.container}>
@@ -20,10 +22,17 @@ const Category = () => {
               scrollEnabled={false}
               keyExtractor={(item) => item.category_id.toString()} // Ensure unique keys
               renderItem={({ item, index }: { item: Categories; index: number }) => (
-                  <View style={styles.categoryContainer}>
+                  <TouchableOpacity onPress={()=>{
+                      router.push({
+                          pathname:'/(root)/categories',
+                          params:{
+                              categoryName:item?.category_name
+                          }
+                      })
+                  }} style={styles.categoryContainer}>
                       <Image source={{ uri: item.image_url }} style={styles.image} />
                       <Text style={styles.categoryText}>{item.category_name}</Text>
-                  </View>
+                  </TouchableOpacity>
               )}
             />}
         </View>
