@@ -18,7 +18,7 @@ const Category = () => {
             {!loading && <FlatList
               data={categories}
               numColumns={4}
-              columnWrapperStyle={{ marginBottom: 20 }}
+              columnWrapperStyle={{ marginBottom: 15}}
               scrollEnabled={false}
               keyExtractor={(item) => item.category_id.toString()} // Ensure unique keys
               renderItem={({ item, index }: { item: Categories; index: number }) => (
@@ -41,12 +41,12 @@ const Category = () => {
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 20,
+        marginTop: 25,
     },
     heading: {
         fontFamily: 'outfit-bold',
-        fontSize: 20,
-        marginBottom: 15,
+        fontSize: 23,
+        marginBottom: 5,
         marginLeft: 20
     },
     categoryContainer: {

@@ -1,13 +1,44 @@
 import {Recipe} from "@/types/type";
-import {Image, View, Text, StyleSheet} from "react-native";
+import {Image, View, Text, StyleSheet, TouchableOpacity, Alert} from "react-native";
 import Colors from "@/services/Colors";
 import Ionicons from '@expo/vector-icons/Ionicons';
+import Feather from '@expo/vector-icons/Feather';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import {useUser} from "@clerk/clerk-expo";
+import {fetchAPI} from "@/lib/fetch";
+import {useState} from "react";
 
 type IntroProps = {
     recipe: Recipe;
 };
 
 const Intro=({recipe}:IntroProps)=>{
+    const {user}=useUser();
+    const [saved, setSaved] = useState(false);
+
+    const saveRecipe=async()=>{
+        await fetchAPI('/(api)/(saved)/saveRecipes',{
+            method: "POST",
+            body:JSON.stringify({
+                recipeId:recipe?.recipe_id,
+                email:user?.emailAddresses[0].emailAddress
+            }),
+        })
+        Alert.alert("Saved!",`Recipe of ${recipe.recipe_name} saved in your cookbook.Visit anytime in future to see it.`);
+        setSaved(true);
+    }
+
+    const deleteRecipe=async()=>{
+        await fetchAPI('/(api)/(saved)/removeSavedRecipes',{
+            method: "DELETE",
+            body:JSON.stringify({
+                recipeId:recipe?.recipe_id,
+            }),
+        })
+        Alert.alert("Unsaved!",`Recipe of ${recipe.recipe_name} is unsaved.Press save again to save it.`);
+        setSaved(false);
+    }
+
     return(
         <View>
             <Image source={{uri:recipe.image_url.replace('ai-guru-lab-images/','ai-guru-lab-images%2f')}}
@@ -16,12 +47,25 @@ const Intro=({recipe}:IntroProps)=>{
                        height:240,
                        borderRadius:20
                    }}/>
-            <Text style={{
-                fontFamily:'outfit-bold',
-                fontSize:25,
-                marginTop:7,
-                textAlign:'center'
-            }}>{recipe.recipe_name}</Text>
+            <View style={{
+                display:'flex',
+                flexDirection:'row',
+                justifyContent:'space-between',
+                alignItems:'center'
+            }}>
+                <Text style={{
+                    fontFamily:'outfit-bold',
+                    fontSize:25,
+                    marginTop:7,
+                }}>{recipe.recipe_name}</Text>
+                <TouchableOpacity onPress={()=>{
+                    !saved?saveRecipe():deleteRecipe()
+                }}>
+                    {!saved?<Feather name="bookmark" size={24} color="black" />:
+                        <FontAwesome name="bookmark" size={24} color="black" />
+                    }
+                </TouchableOpacity>
+            </View>
 
             <Text style={{
                 fontFamily:'outfit-bold',

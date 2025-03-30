@@ -7,7 +7,6 @@ type IngredientsProps = {
 };
 
 const Ingredients=({items}:IngredientsProps)=>{
-    console.log(items);
     return(
         <View style={{
             marginTop:25,

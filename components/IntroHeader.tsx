@@ -21,7 +21,6 @@ const IntroHeader = () => {
 
     return (
         <View style={styles.container}>
-            {/* Profile Icon & Greeting */}
             <View style={styles.profileContainer}>
                 <TouchableOpacity onPress={() => setModalVisible(true)}>
                     <View style={[styles.profileIcon, { backgroundColor: randomColor }]}>
@@ -31,13 +30,11 @@ const IntroHeader = () => {
                 <Text style={styles.greeting}>Hello {user?.firstName}</Text>
             </View>
 
-            {/* Veg/Non-Veg Toggle */}
             <View style={styles.toggleContainer}>
                 <Text style={styles.toggleText}>{isEnabled ? "Veg" : "Non-Veg"}</Text>
                 <Switch value={isEnabled} onValueChange={() => setIsEnabled(!isEnabled)} />
             </View>
 
-            {/* Sign-Out Modal */}
             {modalVisible && (
                 <Pressable style={styles.overlay} onPress={() => setModalVisible(false)}>
                     <View style={styles.modal}>
@@ -58,7 +55,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: 10,
+        paddingHorizontal: 5,
     },
     profileContainer: {
         flexDirection: "row",

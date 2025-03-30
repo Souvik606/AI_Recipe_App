@@ -8,7 +8,7 @@ import RecipeCard from "@/components/RecipeCard";
 const RecipeByCategory=()=>{
     const {categoryName}=useLocalSearchParams();
 
-    const {data:recipeList,loading}=useFetch<Recipe[]>(`/(api)/recipeByCategory?category=${categoryName}`)
+    const {data:recipeList,loading,refetch}=useFetch<Recipe[]>(`/(api)/(recipe)/recipeByCategory?category=${categoryName}`)
 
     return(
         <View style={{
@@ -34,10 +34,12 @@ const RecipeByCategory=()=>{
             {!loading && (
                 <FlatList
                     data={recipeList}
+                    onRefresh={refetch}
+                    refreshing={loading}
                     numColumns={2}
                     showsVerticalScrollIndicator={false}
-                    keyExtractor={(item) => item.recipe_id} // Ensure each item has a unique key
-                    renderItem={({ item, index }) => (  // ✅ Proper destructuring
+                    keyExtractor={(item) => item.recipe_id}
+                    renderItem={({ item, index }) => (
                         <View style={{
                             flex:1
                         }} key={index}>

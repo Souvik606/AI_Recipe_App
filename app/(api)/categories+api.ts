@@ -9,7 +9,7 @@ export async function GET(req: Request) {
         });
 
     }catch (error) {
-        console.error("Error creating user:", error);
+        console.error("Error while fetching categories:", error);
         return Response.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }

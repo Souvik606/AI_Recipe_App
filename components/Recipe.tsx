@@ -49,7 +49,7 @@ const CreateRecipe=()=>{
             const content=JSON.parse(result?.choices[0].message?.content.replace(/^```(json)?\s*/, "").replace(/\s*```$/, ""));
             const imagePrompt=content[0]?.ImagePrompt;
             const outputUrl=await generateImage(imagePrompt)
-            const {data:recipe}=await fetchAPI('/(api)/recipe',{
+            const {data:recipe}=await fetchAPI('/(api)/(recipe)/recipe',{
                 method: "POST",
                 body:JSON.stringify({
                     ...content[0],
@@ -128,6 +128,7 @@ const styles=StyleSheet.create({
     container:{
         marginTop:5,
         padding:15,
+        marginHorizontal:10,
         backgroundColor:Colors.SECONDARY,
         borderRadius:25,
         display:"flex",
@@ -146,6 +147,7 @@ const styles=StyleSheet.create({
         fontFamily:'outfit',
         fontSize:16,
         marginTop:10,
+        textAlign:'center',
     },
     textInput:{
         backgroundColor:Colors.WHITE,
