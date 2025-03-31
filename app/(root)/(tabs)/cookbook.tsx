@@ -1,4 +1,4 @@
-import {View, Text, FlatList, StyleSheet, TouchableOpacity} from "react-native";
+import {View, Text, FlatList, StyleSheet, TouchableOpacity, Image} from "react-native";
 import Colors from "@/services/Colors";
 import {useFetch} from "@/lib/fetch";
 import {Recipe} from "@/types/type";
@@ -52,7 +52,7 @@ const CookbookPage = () => {
                 )
             }
 
-            {!loading && (
+            {!loading && userRecipes?.length>0?(
                 <FlatList
                     data={userRecipes}
                     onRefresh={refetch}
@@ -68,7 +68,37 @@ const CookbookPage = () => {
                         </View>
                     )}
                 />
-            )}
+            ):(!loading &&(
+                <View style={{
+                    flex:0.8,
+                    justifyContent:'center',
+                    alignItems:'center',
+                }}>
+                   <Image source={require('../../../assets/images/cookbook-empty.png')}
+                   style={{
+                       width:150,
+                       height:150
+                   }}
+                   />
+                    <Text style={{
+                        fontFamily:'outfit-bold',
+                        color:Colors.GRAY,
+                        fontSize:23,
+                        textAlign:'center',
+                        marginHorizontal:20,
+                        marginTop:15
+                    }}>{activeTab===1?"You haven't created any recipes till now":
+                        "You haven't saved any recipes till now"}</Text>
+                    <Text style={{
+                        fontFamily:'outfit',
+                        color:Colors.GRAY,
+                        fontSize:18,
+                        textAlign:'center'
+                    }}>{activeTab===1?"Try to create a recipe using AI now in seconds":
+                        "Save a recipe you liked for use in future"}</Text>
+                </View>
+            ))
+            }
         </View>
     )
 }
