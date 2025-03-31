@@ -49,7 +49,8 @@ const CreateRecipe=()=>{
             const content=JSON.parse(result?.choices[0].message?.content.replace(/^```(json)?\s*/, "").replace(/\s*```$/, ""));
             const imagePrompt=content[0]?.ImagePrompt;
             const outputUrl=await generateImage(imagePrompt)
-            const {data:recipe}=await fetchAPI('/(api)/(recipe)/recipe',{
+            console.log("content",content[0])
+            const {data:recipe}=await fetchAPI(`${process.env.EXPO_PUBLIC_SERVER_URL}/(api)/(recipe)/recipe`,{
                 method: "POST",
                 body:JSON.stringify({
                     ...content[0],
@@ -57,6 +58,7 @@ const CreateRecipe=()=>{
                     email:user?.emailAddresses[0].emailAddress
                 }),
             })
+
             router.push({
                     pathname:'/(root)/recipeDetails',
                     params:{

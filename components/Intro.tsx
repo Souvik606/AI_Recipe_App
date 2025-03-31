@@ -18,7 +18,7 @@ const Intro=({recipe,saveStatus}:IntroProps)=>{
     const [saved, setSaved] = useState(saveStatus);
 
     const saveRecipe=async()=>{
-        await fetchAPI('/(api)/(saved)/saveRecipes',{
+        await fetchAPI(`${process.env.EXPO_PUBLIC_SERVER_URL}/(api)/(saved)/saveRecipes`,{
             method: "POST",
             body:JSON.stringify({
                 recipeId:recipe?.recipe_id,
@@ -30,7 +30,7 @@ const Intro=({recipe,saveStatus}:IntroProps)=>{
     }
 
     const deleteRecipe=async()=>{
-        await fetchAPI('/(api)/(saved)/removeSavedRecipes',{
+        await fetchAPI(`${process.env.EXPO_PUBLIC_SERVER_URL}/(api)/(saved)/removeSavedRecipes`,{
             method: "DELETE",
             body:JSON.stringify({
                 recipeId:recipe?.recipe_id,
@@ -51,15 +51,18 @@ const Intro=({recipe,saveStatus}:IntroProps)=>{
             <View style={{
                 display:'flex',
                 flexDirection:'row',
-                justifyContent:'space-between',
-                alignItems:'center'
+                justifyContent:'center',
+                alignItems:'center',
+                gap:10
             }}>
                 <Text style={{
                     fontFamily:'outfit-bold',
                     fontSize:25,
                     marginTop:7,
+                    paddingLeft:15,
+                    textAlign:'center'
                 }}>{recipe.recipe_name}</Text>
-                <TouchableOpacity onPress={()=>{
+                <TouchableOpacity style={{paddingRight:20}} onPress={()=>{
                     !saved?saveRecipe():deleteRecipe()
                 }}>
                     {!saved?<Feather name="bookmark" size={30} color="black" />:

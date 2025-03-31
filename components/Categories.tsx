@@ -4,7 +4,7 @@ import { Categories } from "@/types/type";
 import {useRouter} from "expo-router";
 
 const Category = () => {
-    const { data: categories, loading, error } = useFetch<Categories[]>('/(api)/categories');
+    const { data: categories, loading, error } = useFetch<Categories[]>(`${process.env.EXPO_PUBLIC_SERVER_URL}/(api)/categories`);
     const router = useRouter();
 
     return (

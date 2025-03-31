@@ -7,7 +7,7 @@ import {useFocusEffect} from "@react-navigation/native";
 import {useCallback} from "react";
 
 const ExplorePage = () => {
-    const {data:recipeList,loading,refetch}=useFetch<Recipe[]>(`/(api)/(recipe)/allRecipes`);
+    const {data:recipeList,loading,refetch}=useFetch<Recipe[]>(`${process.env.EXPO_PUBLIC_SERVER_URL}/(api)/(recipe)/allRecipes`);
 
     useFocusEffect(
         useCallback(() => {

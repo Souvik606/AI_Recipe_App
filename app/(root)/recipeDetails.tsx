@@ -17,7 +17,7 @@ const RecipeDetails=()=>{
     const {recipeData}=useLocalSearchParams()
     const recipe:Recipe=JSON.parse(recipeData as string);
     const scrollViewRef = useRef<ScrollView>(null);
-    const {data:savedStatus,loading}=useFetch<saveStatus[]>(`/(api)/(saved)/saveStatus?recipeId=${recipe.recipe_id}`)
+    const {data:savedStatus,loading}=useFetch<saveStatus[]>(`${process.env.EXPO_PUBLIC_SERVER_URL}/(api)/(saved)/saveStatus?recipeId=${recipe.recipe_id}&userId=${recipe.user_id}`)
 
     useEffect(() => {
         scrollViewRef.current?.scrollTo({ y: 0, animated: true });

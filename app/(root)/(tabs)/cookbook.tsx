@@ -13,8 +13,8 @@ const CookbookPage = () => {
     const [activeTab, setActiveTab] = useState(1);
     const email=user?.emailAddresses[0].emailAddress
     const {data:userRecipes,loading,refetch}=
-        activeTab==1?useFetch<Recipe[]>(`/(api)/(recipe)/recipeByUser?email=${email}`):
-            useFetch<Recipe[]>(`/(api)/(saved)/savedRecipes?email=${email}`)
+        activeTab==1?useFetch<Recipe[]>(`${process.env.EXPO_PUBLIC_SERVER_URL}/(api)/(recipe)/recipeByUser?email=${email}`):
+            useFetch<Recipe[]>(`${process.env.EXPO_PUBLIC_SERVER_URL}/(api)/(saved)/savedRecipes?email=${email}`)
 
     useFocusEffect(
         useCallback(() => {

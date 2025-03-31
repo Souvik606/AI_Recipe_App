@@ -27,14 +27,14 @@
       [
         "expo-router",
         {
-          "origin": "https://tastopia.com/"
+          "origin": "https://tastopia-ai--2awfked38p.expo.app/"
         }
       ],
       [
         "expo-splash-screen",
         {
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
+          "imageWidth": 400,
           "resizeMode": "contain",
           "backgroundColor": "#D0F0C0"
         }
@@ -45,7 +45,7 @@
     },
     "extra": {
       "router": {
-        "origin": "https://tastopia.com/"
+        "origin": "https://tastopia-ai--2awfked38p.expo.app/"
       },
       "eas": {
         "projectId": "aea4d743-a6bf-4e84-82a8-b3fb68e2e875"

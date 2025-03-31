@@ -60,7 +60,7 @@ const SignUp = () => {
                 code: verification.code,
             });
             if (completeSignUp.status === "complete") {
-                await fetchAPI('/(api)/user',{
+                await fetchAPI(`${process.env.EXPO_PUBLIC_SERVER_URL}/(api)/user`,{
                     method: "POST",
                     body:JSON.stringify({
                         name:form.name,

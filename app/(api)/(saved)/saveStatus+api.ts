@@ -5,10 +5,15 @@ export async function GET(request: Request) {
         const url = new URL(request.url);
         const searchParams = url.searchParams;
         const recipeId = searchParams.get("recipeId");
+        const userId=searchParams.get("userId");
+
+        console.log(userId);
 
         const response = await sql`
             SELECT EXISTS (
-                SELECT 1 FROM saved_recipes WHERE recipe_id = ${recipeId}
+                SELECT 1 FROM saved_recipes
+                WHERE recipe_id = ${recipeId}
+                AND user_id = ${userId}
             ) AS is_saved;
         `;
 

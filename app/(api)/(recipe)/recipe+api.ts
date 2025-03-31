@@ -16,6 +16,8 @@ export async function POST(request: Request) {
             email
         } = await request.json();
 
+        console.log("email", email);
+
         if (!(recipeName && email)) {
             return new Response(
                 JSON.stringify({ error: "Missing recipe name or email address" }),
@@ -23,56 +25,51 @@ export async function POST(request: Request) {
             );
         }
 
-        const user = await sql`SELECT id FROM users_list WHERE email=${email};`;
+        // 🔹 Use a single query to fetch user_id and category_id together
+        const result = await sql`
+            WITH user_info AS (
+                SELECT id AS user_id FROM users_list WHERE email = ${email}
+            ), category_info AS (
+                SELECT category_id FROM categories WHERE category_name = ${category}
+            )
+            INSERT INTO recipe (
+                recipe_name,
+                description,
+                ingredients,
+                steps,
+                calories,
+                cook_time,
+                serve_to,
+                image_prompt,
+                category_id,
+                image_url,
+                user_id
+            )
+            SELECT 
+                ${recipeName},
+                ${description},
+                ${JSON.stringify(ingredients)},
+                ${JSON.stringify(steps)},
+                ${calories},
+                ${cookTime},
+                ${serveTo},
+                ${ImagePrompt},
+                category_info.category_id,
+                ${imageUrl},
+                user_info.user_id
+            FROM user_info, category_info
+            RETURNING *;
+        `;
 
-        if (!user.length) {
+        // If no user or category was found, `result` will be empty
+        if (!result.length) {
             return new Response(
-                JSON.stringify({ error: "User not found" }),
+                JSON.stringify({ error: "User or category not found" }),
                 { status: 404 }
             );
         }
 
-        const categoryId=await sql`SELECT category_id FROM categories WHERE category_name=${category}`;
-
-        if(!categoryId.length){
-            console.log("Category error")
-            return new Response(
-                JSON.stringify({ error: "Category not found" }),
-                { status: 404 }
-            );
-        }
-
-        const recipe = await sql`
-        INSERT INTO recipe(
-            recipe_name,
-            description,
-            ingredients,
-            steps,
-            calories,
-            cook_time,
-            serve_to,
-            image_prompt,
-            category_id,
-            image_url,
-            user_id
-        ) VALUES (
-            ${recipeName},
-            ${description},
-            ${JSON.stringify(ingredients)},
-            ${JSON.stringify(steps)},
-            ${calories},
-            ${cookTime},
-            ${serveTo},
-            ${ImagePrompt},
-            ${categoryId[0].category_id},
-            ${imageUrl},
-            ${user[0].id}
-        )
-        RETURNING *;
-    `;
-        return new Response(JSON.stringify({ data: recipe }), {
-            status: 201,
-        });
+        return new Response(JSON.stringify({ data: result[0] }), { status: 201 });
 
     } catch (error) {
         console.error("Error creating recipe:", error);

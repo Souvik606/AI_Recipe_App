@@ -1,14 +1,24 @@
-import {Redirect} from "expo-router";
-import {useAuth} from "@clerk/clerk-expo";
+import { Redirect } from "expo-router";
+import { useAuth } from "@clerk/clerk-expo";
+import { useEffect, useState } from "react";
 
-export default function Page() {
-  const { isSignedIn } = useAuth()
+const Page = () => {
+  const { isSignedIn } = useAuth();
+  const [signInStatus, setSignInStatus] = useState<boolean | undefined>(undefined);
 
-  if (isSignedIn) {
-    return <Redirect href='/(root)/(tabs)/home' />
+  useEffect(() => {
+    setSignInStatus(isSignedIn);
+  }, [isSignedIn]);
+
+  if (signInStatus === undefined) {
+    return null;
   }
 
-  return (
-      <Redirect href='/(auth)/landing'/>
+  return signInStatus ? (
+      <Redirect href="/(root)/(tabs)/home" />
+  ) : (
+      <Redirect href="/(auth)/landing" />
   );
-}
+};
+
+export default Page;

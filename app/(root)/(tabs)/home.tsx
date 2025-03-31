@@ -10,7 +10,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import {useCallback} from "react";
 
 const HomePage = () => {
-    const {data:latestRecipes,loading,refetch}=useFetch<Recipe[]>(`/(api)/(recipe)/recipeByLimit`)
+    const {data:latestRecipes,loading,refetch}=useFetch<Recipe[]>(`${process.env.EXPO_PUBLIC_SERVER_URL}/(api)/(recipe)/recipeByLimit`)
 
     useFocusEffect(
         useCallback(() => {
