@@ -1,6 +1,6 @@
 import { useUser, useAuth } from "@clerk/clerk-expo";
-import { Switch, Text, View, TouchableOpacity, Pressable, StyleSheet } from "react-native";
-import { useState, useMemo } from "react";
+import {Text, View, TouchableOpacity, StyleSheet, Image} from "react-native";
+import {useMemo } from "react";
 import { router } from "expo-router";
 
 const COLORS = ["#1B5E20", "#0D47A1", "#B71C1C", "#E65100", "#880E4F"]; // Dark Green, Dark Blue, Red, Orange, Dark Pink
@@ -8,8 +8,6 @@ const COLORS = ["#1B5E20", "#0D47A1", "#B71C1C", "#E65100", "#880E4F"]; // Dark 
 const IntroHeader = () => {
     const { user } = useUser();
     const { signOut } = useAuth();
-    const [isEnabled, setIsEnabled] = useState(false);
-    const [modalVisible, setModalVisible] = useState(false);
 
     const firstLetter = user?.firstName ? user.firstName[0].toUpperCase() : "?";
     const randomColor = useMemo(() => COLORS[Math.floor(Math.random() * COLORS.length)], []);
@@ -22,30 +20,20 @@ const IntroHeader = () => {
     return (
         <View style={styles.container}>
             <View style={styles.profileContainer}>
-                <TouchableOpacity onPress={() => setModalVisible(true)}>
-                    <View style={[styles.profileIcon, { backgroundColor: randomColor }]}>
-                        <Text style={styles.profileLetter}>{firstLetter}</Text>
-                    </View>
-                </TouchableOpacity>
+                <View style={[styles.profileIcon, { backgroundColor: randomColor }]}>
+                    <Text style={styles.profileLetter}>{firstLetter}</Text>
+                </View>
                 <Text style={styles.greeting}>Hello {user?.firstName}</Text>
             </View>
 
             <View style={styles.toggleContainer}>
-                <Text style={styles.toggleText}>{isEnabled ? "Veg" : "Non-Veg"}</Text>
-                <Switch value={isEnabled} onValueChange={() => setIsEnabled(!isEnabled)} />
+                <TouchableOpacity onPress={()=>{
+                    signOut();
+                    router.push(`/(auth)/sign-in`);
+                }}>
+                    <Image style={{width:40,height:40}} source={require('../assets/images/i5.png')}/>
+                </TouchableOpacity>
             </View>
-
-            {modalVisible && (
-                <Pressable style={styles.overlay} onPress={() => setModalVisible(false)}>
-                    <View style={styles.modal}>
-                        <Text style={styles.modalName}>{user?.fullName}</Text>
-                        <Text style={styles.modalEmail}>{user?.emailAddresses[0].emailAddress}</Text>
-                        <TouchableOpacity onPress={handleSignOut} style={styles.signOutButton}>
-                            <Text style={styles.signOutText}>Sign Out</Text>
-                        </TouchableOpacity>
-                    </View>
-                </Pressable>
-            )}
         </View>
     );
 };
@@ -56,6 +44,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         paddingHorizontal: 5,
+        marginTop:5
     },
     profileContainer: {
         flexDirection: "row",

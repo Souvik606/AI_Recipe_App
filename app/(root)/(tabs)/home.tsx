@@ -6,9 +6,17 @@ import Category from "@/components/Categories";
 import {useFetch} from "@/lib/fetch";
 import {Recipe} from "@/types/type";
 import RecipeCardHome from "@/components/RecipeCardHome";
+import { useFocusEffect } from "@react-navigation/native";
+import {useCallback} from "react";
 
 const HomePage = () => {
     const {data:latestRecipes,loading,refetch}=useFetch<Recipe[]>(`/(api)/(recipe)/recipeByLimit`)
+
+    useFocusEffect(
+        useCallback(() => {
+            refetch();
+        }, [])
+    );
 
     return (
         <ScrollView contentContainerStyle={{ paddingBottom: 150 }} style={{
@@ -27,15 +35,29 @@ const HomePage = () => {
                     marginBottom:5
                 }}>Latest Recipes</Text>
 
-                <FlatList data={latestRecipes}
-                          showsHorizontalScrollIndicator={false}
-                          horizontal={true}
-                          renderItem={({item,index})=>(
-                              <View>
-                                  <RecipeCardHome recipe={item}/>
-                              </View>
-                          )}
-                />
+                {loading && (
+                    <Text style={{
+                        fontFamily:'outfit',
+                        fontSize:20,
+                        textAlign:'center',
+                        marginTop:35
+                    }}>Loading ...</Text>
+                )}
+
+                {!loading && (
+                    <FlatList data={latestRecipes}
+                              showsHorizontalScrollIndicator={false}
+                              onRefresh={refetch}
+                              refreshing={loading}
+                              horizontal={true}
+                              renderItem={({item,index})=>(
+                                  <View key={index}>
+                                      <RecipeCardHome recipe={item}/>
+                                  </View>
+                              )}
+                    />
+                )}
+
             </View>
             <CreateRecipe/>
             <Category/>

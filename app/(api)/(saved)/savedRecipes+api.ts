@@ -11,11 +11,9 @@ export async function GET(request: Request) {
        `
 
         const response = await sql`
-            SELECT * FROM recipe
-            WHERE recipe_id IN (
-                SELECT recipe_id FROM saved_recipes
-                WHERE user_id=${userId[0].id}                
-                );
+            SELECT R.* FROM recipe R,saved_recipes S
+            WHERE R.recipe_id=S.recipe_id and S.user_id=${userId[0].id}
+            ORDER BY S.saved_at DESC;
         `;
 
         return new Response(JSON.stringify({ data: response }), {

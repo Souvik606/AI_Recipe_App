@@ -60,7 +60,6 @@ const CookbookPage = () => {
                     contentContainerStyle={{paddingBottom:100}}
                     numColumns={2}
                     showsVerticalScrollIndicator={false}
-                    keyExtractor={(item) => item.recipe_id}
                     renderItem={({ item, index }) => (
                         <View style={{
                             flex:1

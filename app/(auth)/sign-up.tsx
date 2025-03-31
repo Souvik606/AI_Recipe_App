@@ -152,7 +152,7 @@ const SignUp = () => {
                         <InputField
                             label={"Code"}
                             icon={lock}
-                            placeholder={"12345"}
+                            placeholder={"123456"}
                             value={verification.code}
                             keyboardType="numeric"
                             labelStyle={{ marginLeft: 20 }}

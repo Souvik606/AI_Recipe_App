@@ -1,7 +1,11 @@
+import * as SplashScreen from "expo-splash-screen";
 import { Stack } from "expo-router";
 import {useFonts} from "expo-font";
 import { ClerkProvider } from '@clerk/clerk-expo'
 import {tokenCache} from "@/lib/auth";
+import {useEffect} from "react";
+
+SplashScreen.preventAutoHideAsync();
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
 
@@ -10,6 +14,16 @@ export default function RootLayout() {
     'outfit': require('../assets/fonts/Outfit-Regular.ttf'),
     'outfit-bold': require('../assets/fonts/Outfit-Bold.ttf'),
   });
+
+    useEffect(() => {
+        if (loaded) {
+            SplashScreen.hideAsync();
+        }
+    }, [loaded]);
+
+    if (!loaded) {
+        return null;
+    }
 
   if (!publishableKey) {
       throw new Error(

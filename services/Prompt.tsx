@@ -8,6 +8,7 @@ export default{
         -Realistic image Text prompt as per recipe as ImagePrompt
         -Select one category of the food from one of the following-[Breakfast,Lunch,Dinner,Drink,Salad,Dessert,FastFood,Chinese]
         -Give me response in JSON format only
+        -Emoji in ingredient icon is compulsory.You have to give it.
         -Following field names should be given only in this named format.
             recipeName,
             description,
