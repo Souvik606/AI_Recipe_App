@@ -57,7 +57,6 @@ const CreateRecipe=()=>{
                     email:user?.emailAddresses[0].emailAddress
                 }),
             })
-            console.log("recipe",recipe[0])
             router.push({
                     pathname:'/(root)/recipeDetails',
                     params:{

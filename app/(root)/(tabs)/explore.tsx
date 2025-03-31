@@ -3,9 +3,17 @@ import Colors from "@/services/Colors";
 import {useFetch} from "@/lib/fetch";
 import {Recipe} from "@/types/type";
 import RecipeCard from "@/components/RecipeCard";
+import {useFocusEffect} from "@react-navigation/native";
+import {useCallback} from "react";
 
 const ExplorePage = () => {
     const {data:recipeList,loading,refetch}=useFetch<Recipe[]>(`/(api)/(recipe)/allRecipes`);
+
+    useFocusEffect(
+        useCallback(() => {
+            refetch();
+        }, [])
+    );
 
     return (
         <View style={{

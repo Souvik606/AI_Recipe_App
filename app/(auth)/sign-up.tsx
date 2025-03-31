@@ -64,7 +64,7 @@ const SignUp = () => {
                     method: "POST",
                     body:JSON.stringify({
                         name:form.name,
-                        email:form.email,
+                        email:form.email.toLowerCase(),
                         clerkId:completeSignUp.createdUserId
                     }),
                 })

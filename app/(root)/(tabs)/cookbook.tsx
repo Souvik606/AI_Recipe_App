@@ -5,7 +5,8 @@ import {Recipe} from "@/types/type";
 import {useUser} from "@clerk/clerk-expo";
 import RecipeCard from "@/components/RecipeCard";
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {useState} from "react";
+import {useCallback, useState} from "react";
+import {useFocusEffect} from "@react-navigation/native";
 
 const CookbookPage = () => {
     const {user}=useUser()
@@ -14,6 +15,12 @@ const CookbookPage = () => {
     const {data:userRecipes,loading,refetch}=
         activeTab==1?useFetch<Recipe[]>(`/(api)/(recipe)/recipeByUser?email=${email}`):
             useFetch<Recipe[]>(`/(api)/(saved)/savedRecipes?email=${email}`)
+
+    useFocusEffect(
+        useCallback(() => {
+            refetch();
+        }, [])
+    );
 
     return (
         <View style={{

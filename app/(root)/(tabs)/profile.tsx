@@ -76,7 +76,7 @@ const ProfilePage = () => {
                                   <TouchableOpacity onPress={
                                       item.name==='Logout'?()=>{
                                           signOut();
-                                          router.push(item.path)
+                                          router.replace(item.path)
                                       }:()=>{
                                           router.push(item.path)
                                       }

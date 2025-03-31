@@ -57,7 +57,6 @@ const HomePage = () => {
                               )}
                     />
                 )}
-
             </View>
             <CreateRecipe/>
             <Category/>
