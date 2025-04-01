@@ -50,7 +50,7 @@ const CreateRecipe=()=>{
             const imagePrompt=content[0]?.ImagePrompt;
             const outputUrl=await generateImage(imagePrompt)
             console.log("content",content[0])
-            const {data:recipe}=await fetchAPI(`${process.env.EXPO_PUBLIC_SERVER_URL}/(api)/(recipe)/recipe`,{
+            const {data:recipe}=await fetchAPI(`${process.env.EXPO_PUBLIC_SERVER_POST_URL}/(api)/(recipe)/recipe`,{
                 method: "POST",
                 body:JSON.stringify({
                     ...content[0],
@@ -59,10 +59,11 @@ const CreateRecipe=()=>{
                 }),
             })
 
+            console.log("recipe",recipe)
             router.push({
                     pathname:'/(root)/recipeDetails',
                     params:{
-                        recipeData:JSON.stringify(recipe[0])
+                        recipeData:JSON.stringify(recipe)
                     }
                 }
             )

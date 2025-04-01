@@ -4,11 +4,12 @@ export default{
     GENERATE_COMPLETE_RECIPE:`
         -As per recipe Name and Description,Give me all list of ingredients as ingredient and try to name the ingredients in one or two words
         -Emoji icons for each ingredient as icon is compulsory,quantity as quantity,along with detail step by step recipe as steps
+        -Emoji in ingredient icon is compulsory.You have to give it anything as close as possible.
         -Total Calories as calories(only number),Minutes to cook as cookTime and serving number as serveTo
         -Realistic image Text prompt as per recipe as ImagePrompt
         -Select one category of the food from one of the following-[Breakfast,Lunch,Dinner,Drink,Salad,Dessert,FastFood,Chinese]
         -Give me response in JSON format only
-        -Emoji in ingredient icon is compulsory.You have to give it.
+       
         -Following field names should be given only in this named format.
             recipeName,
             description,
