@@ -25,7 +25,6 @@ export async function POST(request: Request) {
             );
         }
 
-        // 🔹 Use a single query to fetch user_id and category_id together
         const result = await sql`
             WITH user_info AS (
                 SELECT id AS user_id FROM users_list WHERE email = ${email}

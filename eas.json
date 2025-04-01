@@ -14,9 +14,9 @@
 
         "DATABASE_URL":"postgresql://recipe-app_owner:npg_8NlbmSTruRD2@ep-polished-wind-a15os6cz-pooler.ap-southeast-1.aws.neon.tech/recipe-app?sslmode=require",
 
-        "EXPO_PUBLIC_SERVER_URL":"https://tastopia.com/",
+        "EXPO_PUBLIC_SERVER_URL":"https://tastopia-ai--kxk77zlxas.expo.app",
 
-        "EXPO_PUBLIC_OPENROUTER_API_KEY":"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",
+        "EXPO_PUBLIC_OPENROUTER_API_KEY":"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",
 
         "EXPO_PUBLIC_IMAGE_API_KEY":"4e4f6748-be6d-4155-acc5-7a29ada01066"
       },

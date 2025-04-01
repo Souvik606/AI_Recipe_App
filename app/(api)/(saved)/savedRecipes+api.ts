@@ -3,16 +3,13 @@ import { sql } from "@/lib/database";
 export async function GET(request: Request) {
     try {
         const url = new URL(request.url);
-        const searchParams = url.searchParams;
-        const email = searchParams.get("email");
-
-        const userId=await sql`
-        SELECT id FROM users_list WHERE email=${email};
-       `
+        const email = url.searchParams.get("email");
 
         const response = await sql`
-            SELECT R.* FROM recipe R,saved_recipes S
-            WHERE R.recipe_id=S.recipe_id and S.user_id=${userId[0].id}
+            SELECT R.* 
+            FROM recipe R
+            INNER JOIN saved_recipes S ON R.recipe_id = S.recipe_id
+            WHERE S.user_id = (SELECT id FROM users_list WHERE email = ${email})
             ORDER BY S.saved_at DESC;
         `;
 
@@ -21,7 +18,7 @@ export async function GET(request: Request) {
         });
 
     } catch (error) {
-        console.error("Error creating user:", error);
+        console.error("Error fetching saved recipes:", error);
         return Response.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }

@@ -7,8 +7,6 @@ export async function GET(request: Request) {
         const recipeId = searchParams.get("recipeId");
         const userId=searchParams.get("userId");
 
-        console.log(userId);
-
         const response = await sql`
             SELECT EXISTS (
                 SELECT 1 FROM saved_recipes
