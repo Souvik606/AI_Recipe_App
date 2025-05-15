@@ -1,50 +1,25 @@
-# Welcome to your Expo app 👋
+# 🥗 Tastopia AI: AI-Based Recipe Generator App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## ✨ Features
+- Generate personalized recipes based on ingredient prompts.
+- Save recipes in your personal cookbook.
+- Browse and discover recipes shared by others.
+- Secure user authentication and data management.
 
-## Get started
+## 📱 Screens
 
-1. Install dependencies
+### **Landing Screen and Authentication Screens**
 
-   ```bash
-   npm install
-   ```
+![WhatsApp Image 2025-05-15 at 15 28 28_504148b2](https://github.com/user-attachments/assets/48658edc-db8d-462c-ab50-aff22adbf657) ![WhatsApp Image 2025-05-15 at 15 28 28_0a2f990f](https://github.com/user-attachments/assets/0fbf3127-de31-4cf7-83a0-ffeece892774) ![WhatsApp Image 2025-05-15 at 15 28 29_46e10442](https://github.com/user-attachments/assets/bc63191b-ac45-4d64-9e59-5bfb7beb9002)
 
-2. Start the app
+### **Home Screen**
 
-   ```bash
-    npx expo start
-   ```
+![WhatsApp Image 2025-05-15 at 15 33 20_fffd1fad](https://github.com/user-attachments/assets/ea2d6c79-a8d4-4d62-9675-5a28ab8773ab) ![WhatsApp Image 2025-05-15 at 15 33 20_fef751ae](https://github.com/user-attachments/assets/840c5383-b507-4131-b7e1-595da11411d0)
 
-In the output, you'll find options to open the app in a
+### **Recipe Screen**
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+![Uploading WhatsApp Image 2025-05-15 at 15.37.16_9b4a30b8.jpg…]() ![Uploading WhatsApp Image 2025-05-15 at 15.37.16_5a45040f.jpg…]() ![WhatsApp Image 2025-05-15 at 15 37 17_ac75ffb6](https://github.com/user-attachments/assets/19b4658b-a52c-43ab-8576-1b2dbeeab6c3) ![WhatsApp Image 2025-05-15 at 15 37 17_6cba0a3f](https://github.com/user-attachments/assets/1ec082de-c3a0-41f8-9c78-48649aa39628)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### **Cookbook and Profile Screens**
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+![WhatsApp Image 2025-05-15 at 15 39 03_d9267f25](https://github.com/user-attachments/assets/77752e98-18bc-461b-9be4-637961d9d150) ![WhatsApp Image 2025-05-15 at 15 39 04_f209f94c](https://github.com/user-attachments/assets/bfa693ee-d77c-4431-a5e8-9619a069047f)
